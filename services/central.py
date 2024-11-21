@@ -2,7 +2,7 @@ import json
 from protocol.jarvis import Jarvis
 
 
-class GroundStation:
+class Central:
     def __init__(self, receive_port=33000, send_port=34000, adjacency_list_file="./discovery/adjacency_list.json", storage_path="./data"):
         self.jarvis = Jarvis(
             receive_port=receive_port,
@@ -14,21 +14,16 @@ class GroundStation:
         self.storage_path = storage_path
 
     def get_neighbors(self):
-        """Retrieve neighbors from the adjacency list."""
         return self.jarvis.adjacency_list.get(self.local_ip, {})
 
     def handle_message(self, data):
-        """Process incoming messages."""
         message = self.jarvis.parse_message(data)
-        print(f"Ground Station {self.local_ip} received message: {message['message_content']}")
         self.store_data(message["message_content"])
 
     def store_data(self, data):
-        """Store the received data locally."""
         with open(f"{self.storage_path}/data.json", "a") as file:
             file.write(json.dumps(data) + "\n")
         print(f"Data stored at ground station {self.local_ip}: {data}")
 
-    def start_receiver(self):
-        """Start the ground station's receiver."""
+    def accept_connections(self):
         self.jarvis.start_receiver(self.store_data)

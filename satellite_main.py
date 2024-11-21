@@ -1,4 +1,4 @@
-from components.satellites.satellite import Satellite
+from services.satellite import Satellite
 
 if __name__ == "__main__":
     # Start the satellite

@@ -8,12 +8,12 @@ import platform
 from tqdm import tqdm
 from jarvis import Jarvis
 
-# Configuration
-specific_port = 12345  # The port to scan
-max_weight = 10  # Maximum weight for edges
-min_weight = 1  # Minimum weight for edges
 
-# TODO sensor should not put other sensors distance in the adj list
+specific_port = 12345
+max_weight = 10
+min_weight = 1
+
+
 def get_local_ip(public_address="8.8.8.8", public_port=80):
     """Retrieve the local IP address."""
     try:
@@ -56,7 +56,6 @@ def scan_ip(ip):
 def discover_nodes(network_range):
     active_ips = []
 
-    # Step 1: Discover active IPs
     print(f"Scanning network for active IPs in range {network_range}...")
     ip_nums = ipaddress.IPv4Network(network_range).num_addresses
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
@@ -69,7 +68,6 @@ def discover_nodes(network_range):
                     active_ips.append(ip)
                 progress.update(1)
 
-    # Step 2: Scan each active IP for the specific port
     print(f"Scanning active IPs for port {specific_port}...")
     discovered_nodes = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
@@ -89,13 +87,13 @@ def discover_nodes(network_range):
 def build_adjacency_list(nodes):
     """Create a randomized adjacency list for the discovered nodes, excluding self-references."""
     adjacency_list = {}
-    nodes = set(nodes)  # Ensure unique nodes
+    nodes = set(nodes)
     for node in nodes:
         node_str = str(node)
         adjacency_list[node_str] = {}
         for neighbor in nodes:
             neighbor_str = str(neighbor)
-            if node != neighbor:  # Exclude self-references
+            if node != neighbor:
                 adjacency_list[node_str][neighbor_str] = random.randint(min_weight, max_weight)
     return adjacency_list
 
@@ -128,14 +126,10 @@ if __name__ == "__main__":
     local_ip = get_local_ip()
     print(f"Local IP: {local_ip}")
 
-    # Ask the user for the network range
     network_range = input("Enter the network range (e.g., 192.168.1.0/24): ").strip()
 
-    # Discover nodes
     discovered_nodes = discover_nodes(network_range)
-    #discovered_nodes.append(local_ip)
 
-    # Build adjacency list if nodes are discovered
     if discovered_nodes:
         print("\nBuilding adjacency list...")
         adjacency_list = build_adjacency_list(discovered_nodes)
@@ -143,10 +137,8 @@ if __name__ == "__main__":
         for node, neighbors in adjacency_list.items():
             print(f"{node}: {neighbors}")
 
-        # Save the adjacency list to a file
         save_adjacency_list_to_file(adjacency_list)
 
-        # Share the adjacency list with all discovered nodes
         print("\nSharing adjacency list with discovered nodes...")
         share_adjacency_list(discovered_nodes, adjacency_list)
     else:
