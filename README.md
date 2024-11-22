@@ -33,6 +33,8 @@ The keys will be saved in the `protocol/crypto/` directory:
 ./runme.sh
 ```
 
+NOTE: This command will have to be run in all the Pi's of group-2 and 4, and the Pi numbers are: 3,4,25,28,27,17,7. In order for it to function properly. 
+
 ### 2. **Run Components Individually**
 You can run each component separately for debugging or testing:
 - **clinic**:
