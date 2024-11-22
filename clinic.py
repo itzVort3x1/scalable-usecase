@@ -36,6 +36,3 @@ if __name__ == "__main__":
         )
         threads.append(thread)
         thread.start()
-
-    for thread in threads:
-        thread.join()
