@@ -1,7 +1,7 @@
 
 host=$(hostname | cut -d'-' -f2)
 
-echo "The extracted part is: $host"
+echo "The host is: $host"
 
 case $host in
   003)
