@@ -1,6 +1,8 @@
 
 # **Scalable Usecase System (Group 2)**
 
+# Protocol buit in collaboration with group 4
+
 ## **Overview**
 - **Clinics**: They send data to the central communication or to hospitals in the urban area.
 - **Satellites**: They help in communicating from rural areas to urban areas by re transmitting the message.
