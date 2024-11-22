@@ -98,7 +98,7 @@ def build_adjacency_list(nodes):
     return adjacency_list
 
 
-def save_adjacency_list_to_file(adjacency_list, filename="adjacency_list.json"):
+def save_adjacency_list_to_file(adjacency_list, filename="adjacency_list_dynamic.json"):
     """Save the adjacency list to a JSON file."""
     with open(filename, "w") as f:
         json.dump(adjacency_list, f, indent=4)
