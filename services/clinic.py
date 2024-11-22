@@ -25,7 +25,7 @@ THRESHOLDS = {
 }
 
 
-class Sensor:
+class Clinic:
     def __init__(self, receive_port=33000, send_port=34000, adjacency_list_file="./discovery/adjacency_list.json"):
         self.jarvis = Jarvis(
             receive_port=receive_port,
@@ -34,6 +34,7 @@ class Sensor:
         )
         self.local_ip = self.jarvis.local_ip
         self.neighbors = self.get_neighbors()
+        self.stop_flag = False
 
 
     def generate_coordinates(self):
@@ -140,11 +141,15 @@ class Sensor:
     def start_receiver(self):
         self.jarvis.start_receiver()
 
+    def stop(self):
+        print("Stopping the Sensor...")
+        self.stop_flag = True
+
     def start(self):
         import threading
         threading.Thread(target=self.start_receiver, daemon=True).start()
 
         # Periodically send data
-        while True:
+        while not self.stop_flag:
             self.send_data()
             time.sleep(5)
